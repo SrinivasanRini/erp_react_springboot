@@ -1,0 +1,56 @@
+# ─── Root-level ignores ────────────────────────────────────────────────────────
+
+### IntelliJ IDEA ###
+.idea/
+*.iws
+*.iml
+*.ipr
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/nbdist/
+/.nb-gradle/
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### VS Code ###
+.vscode/
+
+### Environment files ###
+.env
+.env.local
+.env.*.local
+
+### OS ###
+.DS_Store
+Thumbs.db
+
+### Logs ###
+*.log
+logs/
+npm-debug.log*
+
+# Each subproject (backend/, frontend/) has its own .gitignore
+# for build artifacts (target/, node_modules/, dist/, etc.)
+
+
+# Backend generated files
+backend/target/
+backend/data/
+
+# Frontend generated files
+frontend/node_modules/
+frontend/dist/
+
+# Environment files
+.env
+.env.*
+!.env.example

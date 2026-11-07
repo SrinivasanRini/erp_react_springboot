@@ -1,0 +1,41 @@
+package com.springerp.config;
+
+import com.springerp.config.interceptor.CompanyHeaderInterceptor;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+/**
+ * Web MVC configuration.
+ * Registers CompanyHeaderInterceptor for all API paths to enforce multi-tenancy.
+ */
+@Configuration
+public class WebMvcConfig implements WebMvcConfigurer {
+
+    private final CompanyHeaderInterceptor companyHeaderInterceptor;
+
+    public WebMvcConfig(CompanyHeaderInterceptor companyHeaderInterceptor) {
+        this.companyHeaderInterceptor = companyHeaderInterceptor;
+    }
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(companyHeaderInterceptor)
+                .addPathPatterns("/invoices/**")
+                .excludePathPatterns(
+                        "/auth/**",
+                        "/api/v1/auth/**",
+                        "/v3/api-docs/**",
+                        "/swagger-ui/**",
+                        "/admin/**",
+                        "/customers/**",
+                        "/suppliers/**",
+                        "/products/**",
+                        "/categories/**",
+                        "/employees/**",
+                        "/inventory/**",
+                        "/accounting/**",
+                        "/user/**"
+                );
+    }
+}
