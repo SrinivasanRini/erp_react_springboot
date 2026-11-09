@@ -102,48 +102,18 @@ pipeline {
         stage('Frontend Tests') {
             steps {
                 dir('frontend') {
-                    script {
-                        int result = sh(
-                            script: 'npm test > test-output.txt 2>&1',
-                            returnStatus: true
-                        )
-
-                        def output = readFile('test-output.txt')
-                        echo output
-
-                        if (result == 0) {
-                            echo 'Frontend tests passed.'
-                        } else if (output.contains('No test files found')) {
-                            echo 'WARNING: No frontend test files configured.'
-                        } else {
-                            error 'Frontend tests failed.'
-                        }
-                    }
+                    // A missing test suite or any failing test must fail the CI pipeline.
+                    sh 'npm test -- --reporter=default'
                 }
             }
         }
 
         // STAGE 9: FRONTEND CODE QUALITY
-        stage('Code Quality Check') {
+        stage('Frontend Code Quality') {
             steps {
                 dir('frontend') {
-                    script {
-                        int result = sh(
-                            script: 'npm run lint > lint-output.txt 2>&1',
-                            returnStatus: true
-                        )
-
-                        def output = readFile('lint-output.txt')
-                        echo output
-
-                        if (result == 0) {
-                            echo 'ESLint checks passed.'
-                        } else if (output.contains("couldn't find a configuration file")) {
-                            echo 'WARNING: ESLint configuration missing.'
-                        } else {
-                            error 'ESLint reported code quality errors.'
-                        }
-                    }
+                    // Do not convert lint failures or missing configuration into warnings.
+                    sh 'npm run lint'
                 }
             }
         }
